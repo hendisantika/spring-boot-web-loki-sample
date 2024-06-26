@@ -1,4 +1,4 @@
-package id.my.hendisantika.springbootweblokisample.entity;
+package id.my.hendisantika.loki.entity;
 
 /**
  * Created by IntelliJ IDEA.
