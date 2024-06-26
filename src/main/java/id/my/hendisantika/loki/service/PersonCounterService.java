@@ -31,4 +31,7 @@ public class PersonCounterService {
         this.counterAdded.increment();
     }
 
+    public void countDeletedPersons() {
+        this.counterDeleted.increment();
+    }
 }
