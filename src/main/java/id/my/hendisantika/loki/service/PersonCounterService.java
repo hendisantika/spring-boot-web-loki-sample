@@ -26,4 +26,9 @@ public class PersonCounterService {
         this.counterAdded = registry.counter("services.person.add");
         this.counterDeleted = registry.counter("services.person.deleted");
     }
+
+    public void countNewPersons() {
+        this.counterAdded.increment();
+    }
+
 }
