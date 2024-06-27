@@ -49,4 +49,11 @@ public class PersonController {
         return p;
     }
 
+    @GetMapping("/name/{firstName}/{lastName}")
+    public List<Person> findByName(@PathVariable("firstName") String firstName,
+                                   @PathVariable("lastName") String lastName) {
+        return persons.stream().filter(it -> it.getFirstName().equals(firstName)
+                        && it.getLastName().equals(lastName))
+                .toList();
+    }
 }
