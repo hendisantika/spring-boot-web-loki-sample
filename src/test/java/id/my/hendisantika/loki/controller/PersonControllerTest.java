@@ -12,6 +12,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,5 +38,12 @@ class PersonControllerTest {
         Person person = restTemplate.postForObject(API_PATH, Instancio.create(Person.class), Person.class);
         assertNotNull(person);
         assertEquals(1, person.getId());
+    }
+
+    @Test
+    @Order(2)
+    void findAll() {
+        Person[] persons = restTemplate.getForObject(API_PATH, Person[].class);
+        assertTrue(persons.length > 0);
     }
 }
