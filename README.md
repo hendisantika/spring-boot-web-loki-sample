@@ -44,3 +44,7 @@ $ curl http://localhost:8080/persons/3
 Swagger UI
 
 ![Swagger UI](img/Swagger-UI.png "Swagger UI")
+
+Grafana Loki
+
+![Grafana Loki](img/loki.png "Grafana Loki")

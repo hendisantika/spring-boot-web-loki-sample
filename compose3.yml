@@ -1,0 +1,62 @@
+volumes:
+  grafana_data: { }
+  loki_data: { }
+
+networks:
+  monitor_net:
+
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: monitoring-grafana
+    user: "472"
+    #    depends_on:
+    #      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      # - ./grafana/provisioning/:/etc/grafana/provisioning/
+    logging:
+      driver: "loki"
+      options:
+        loki-url: "http://127.0.0.1:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+    networks:
+      - monitor_net
+    restart: always
+
+  loki:
+    container_name: monitoring-loki
+    image: grafana/loki:2.3.0
+    restart: unless-stopped
+    logging:
+      driver: "loki"
+      options:
+        loki-url: "http://127.0.0.1:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./config/loki-config.yaml:/etc/loki/loki-config.yaml
+      - loki_data:/data/loki
+    command: -config.file=/etc/loki/loki-config.yaml
+
+  promtail:
+    container_name: monitoring-promtail
+    image: grafana/promtail:2.3.0
+    restart: unless-stopped
+    logging:
+      driver: "loki"
+      options:
+        loki-url: "http://127.0.0.1:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+    depends_on:
+      - loki
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./config/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+    command: -config.file=/etc/promtail/promtail-config.yaml
