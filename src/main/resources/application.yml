@@ -22,6 +22,7 @@ springdoc:
     path: /swagger-ui
 application-description: '@project.description@'
 application-version: '@project.version@'
+
 management:
   security:
     enabled: false
