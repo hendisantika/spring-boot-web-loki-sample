@@ -46,4 +46,13 @@ class PersonControllerTest {
         Person[] persons = restTemplate.getForObject(API_PATH, Person[].class);
         assertTrue(persons.length > 0);
     }
+
+    @Test
+    @Order(2)
+    void findById() {
+        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
+        assertNotNull(person);
+        assertEquals(1, person.getId());
+    }
+
 }
