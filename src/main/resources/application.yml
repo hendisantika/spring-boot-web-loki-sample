@@ -14,8 +14,14 @@ server:
 #    org.springframework.web: DEBUG
 #  file: app.log
 
-springdoc.show-actuator: true
-
+springdoc:
+  show-actuator: true
+  api-docs:
+    path: /v3/api-doc
+  swagger-ui:
+    path: /swagger-ui
+application-description: '@project.description@'
+application-version: '@project.version@'
 management:
   security:
     enabled: false
