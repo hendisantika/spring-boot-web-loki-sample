@@ -55,4 +55,13 @@ class PersonControllerTest {
         assertEquals(1, person.getId());
     }
 
+    @Test
+    @Order(3)
+    void update() {
+        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
+        person.setFirstName("Updated");
+        restTemplate.put("/persons/{id}", person, 1L);
+        Person updatedPerson = restTemplate.getForObject("/persons/{id}", Person.class, 1L);
+        assertEquals("Updated", updatedPerson.getFirstName());
+    }
 }
