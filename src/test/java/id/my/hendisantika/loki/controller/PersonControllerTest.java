@@ -12,6 +12,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -63,5 +64,13 @@ class PersonControllerTest {
         restTemplate.put("/persons/{id}", person, 1L);
         Person updatedPerson = restTemplate.getForObject("/persons/{id}", Person.class, 1L);
         assertEquals("Updated", updatedPerson.getFirstName());
+    }
+
+    @Test
+    @Order(4)
+    void delete() {
+        restTemplate.delete(API_PATH + "/{id}", 1L);
+        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
+        assertNull(person.getId());
     }
 }
