@@ -6,6 +6,7 @@ import id.my.hendisantika.loki.service.PersonCounterService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,5 +68,14 @@ public class PersonController {
         persons.add(p);
         counterService.countNewPersons();
         return p;
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        Person p = persons.stream().filter(it -> it.getId().equals(id)).findFirst().orElseThrow();
+        persons.remove(p);
+        LabelMarker marker = LabelMarker.of("personId", () -> String.valueOf(id));
+        LOG.info(marker, "Person successfully removed");
+        counterService.countDeletedPersons();
     }
 }
