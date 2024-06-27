@@ -1,11 +1,13 @@
 package id.my.hendisantika.loki.controller;
 
+import com.github.loki4j.slf4j.marker.LabelMarker;
 import id.my.hendisantika.loki.entity.Person;
 import id.my.hendisantika.loki.service.PersonCounterService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,16 @@ public class PersonController {
     @GetMapping
     public List<Person> findAll() {
         return persons;
+    }
+
+    @GetMapping("/{id}")
+    public Person findById(@PathVariable("id") Long id) {
+        Person p = persons.stream().filter(it -> it.getId().equals(id))
+                .findFirst()
+                .orElseThrow();
+        LabelMarker marker = LabelMarker.of("personId", () -> String.valueOf(p.getId()));
+        LOG.info(marker, "Person successfully found");
+        return p;
     }
 
 }
