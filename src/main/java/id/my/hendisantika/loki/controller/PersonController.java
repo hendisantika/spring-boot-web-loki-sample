@@ -5,6 +5,7 @@ import id.my.hendisantika.loki.service.PersonCounterService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,4 +31,10 @@ public class PersonController {
     private final List<Person> persons = new ArrayList<>();
 
     private final PersonCounterService counterService;
+
+    @GetMapping
+    public List<Person> findAll() {
+        return persons;
+    }
+
 }
