@@ -8,11 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -26,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * To change this template use File | Settings | File Templates.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestRestTemplate
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PersonControllerTest {
     private static final String API_PATH = "/persons";
@@ -70,7 +72,7 @@ class PersonControllerTest {
     @Order(4)
     void delete() {
         restTemplate.delete(API_PATH + "/{id}", 1L);
-        Person person = restTemplate.getForObject(API_PATH + "/{id}", Person.class, 1L);
-        assertNull(person.getId());
+        ResponseEntity<String> response = restTemplate.getForEntity(API_PATH + "/{id}", String.class, 1L);
+        assertTrue(response.getStatusCode().isError());
     }
 }
